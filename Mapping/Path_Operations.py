@@ -26,9 +26,8 @@ def createMap(mapPath):
             folium.Marker(location = [point.getContent().getLatitude(), point.getContent().getLongitude()], tooltip = point.getContent().getPlaceName(), icon = folium.Icon(color = 'blue', icon = "fas fa-user-doctor", prefix = "fa")).add_to(map)
         if 'Ospedale' in point.getContent().getPlaceName():
             folium.Marker(location = [point.getContent().getLatitude(), point.getContent().getLongitude()], tooltip = point.getContent().getPlaceName(), icon = folium.Icon(color = 'blue', icon = "fas fa-hospital", prefix = "fa")).add_to(map) 
-        else:       
-            folium.Marker(location = [point.getContent().getLatitude(), point.getContent().getLongitude()], tooltip = point.getContent().getPlaceName()).add_to(map)
-
+        else:    
+            folium.CircleMarker(location = [point.getContent().getLatitude(), point.getContent().getLongitude()], tooltip = point.getContent().getPlaceName(),radius=4, fill_color="orange", fill_opacity=0.4, color="black").add_to(map)
     for street in streets:
         folium.PolyLine(locations = [(street.getStartNode().getContent().getLatitude(), street.getStartNode().getContent().getLongitude()), (street.getDestinationNode().getContent().getLatitude(), street.getDestinationNode().getContent().getLongitude())], color = 'orange').add_to(map)    
 
