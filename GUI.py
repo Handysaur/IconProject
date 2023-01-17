@@ -12,7 +12,7 @@ from Dataset import data_Handling
 import main
 
 from SecondWindow import Ui_SecondWindow
-from KB_GUI import Ui_KBWindow
+from KB_GUI import Ui_Ui_KBWindow
 
 checkboxes_List = []
 
@@ -38,7 +38,7 @@ class Ui_MainWindow(object):
 
     def showKBGui(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_KBWindow()
+        self.ui = Ui_Ui_KBWindow()
         self.ui.setupUi(self.window)
         self.window.show()    
 
@@ -2220,12 +2220,9 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.actionVisualizza_ontologia = QtWidgets.QAction(MainWindow, clicked = lambda: self.showKBGui())
+        self.actionVisualizza_ontologia = QtWidgets.QAction(MainWindow)
         self.actionVisualizza_ontologia.setObjectName("actionVisualizza_ontologia")
-        self.actionKB = QtWidgets.QAction(MainWindow)
-        self.actionKB.setObjectName("actionKB")
-        self.menuVisualizza_ontologia.addAction(self.actionVisualizza_ontologia)
-        self.menuVisualizza_ontologia.addAction(self.actionKB)
+        self.actionVisualizza_ontologia.triggered.connect(self.showKBGui)
         self.menubar.addAction(self.menuVisualizza_ontologia.menuAction())
 
         checkboxes_List.append(self.checkBox)
@@ -2403,8 +2400,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "CAMBIO CLASSIFICATORE"))
         self.pushButton_4.setText(_translate("MainWindow", "CERCA MEDICO"))
         self.menuVisualizza_ontologia.setTitle(_translate("MainWindow", "Menù"))
-        self.actionVisualizza_ontologia.setText(_translate("MainWindow", "Visualizza ontologia"))
-        self.actionKB.setText(_translate("MainWindow", "KB"))
+        self.actionVisualizza_ontologia.setText(_translate("MainWindow", "Ask KB"))
         current_classifier_name = "        Classificatore correntemente in uso: " + self.comboBox.currentText()
         self.lineEdit.setText(current_classifier_name)
         self.plainTextEdit.setPlainText("Una volta effettuata una predizione, il suo risultato apparirà qui.")
