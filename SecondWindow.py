@@ -182,6 +182,7 @@ class Ui_SecondWindow(object):
         self.lineEdit.setFont(font)
         self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit.setReadOnly(True)
         self.comboBox_StartPositions_Names = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox_StartPositions_Names.setGeometry(QtCore.QRect(160, 100, 521, 41))
         self.comboBox_StartPositions_Names.setObjectName("comboBox_StartPositions_Names")
@@ -193,18 +194,7 @@ class Ui_SecondWindow(object):
                 self.comboBox_StartPositions_Names.setItemText(i, position.getContent().getPlaceName())
                 i += 1
 
-        self.radioButton_2 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_2.setGeometry(QtCore.QRect(440, 320, 141, 41))
-        font = QtGui.QFont()
-        font.setPointSize(16)
-        self.radioButton_2.setFont(font)
-        self.radioButton_2.setObjectName("radioButton_2")
-        self.radioButton_3 = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_3.setGeometry(QtCore.QRect(270, 320, 141, 41))
-        font = QtGui.QFont()
-        font.setPointSize(16)
-        self.radioButton_3.setFont(font)
-        self.radioButton_3.setObjectName("radioButton_3")
+
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.searchPath())
         self.pushButton_5.setGeometry(QtCore.QRect(200, 390, 421, 61))
         palette = QtGui.QPalette()
@@ -368,6 +358,7 @@ class Ui_SecondWindow(object):
         self.lineEdit_2.setFont(font)
         self.lineEdit_2.setAlignment(QtCore.Qt.AlignCenter)
         self.lineEdit_2.setObjectName("lineEdit_2")
+        self.lineEdit_2.setReadOnly(True)
         self.comboBox_GoalPositions_Names = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox_GoalPositions_Names.setGeometry(QtCore.QRect(160, 250, 521, 41))
         self.comboBox_GoalPositions_Names.setObjectName("comboBox_GoalPositions_Names")
@@ -389,6 +380,15 @@ class Ui_SecondWindow(object):
         self.statusbar.setObjectName("statusbar")
         SecondWindow.setStatusBar(self.statusbar)
 
+        self.pathResult = QtWidgets.QLineEdit(self.centralwidget)
+        self.pathResult.setGeometry(QtCore.QRect(80, 340, 671, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pathResult.setReadOnly(True)
+        self.pathResult.setFont(font)
+        self.pathResult.setAlignment(QtCore.Qt.AlignCenter)
+        self.pathResult.setObjectName("pathResult")
+
         self.retranslateUi(SecondWindow)
         QtCore.QMetaObject.connectSlotsByName(SecondWindow)
 
@@ -396,10 +396,9 @@ class Ui_SecondWindow(object):
         _translate = QtCore.QCoreApplication.translate
         SecondWindow.setWindowTitle(_translate("SecondWindow", "MainWindow"))
         self.lineEdit.setText(_translate("SecondWindow", "Scegli da dove vuoi partire per cercare il medico o l\'ospedale più vicino."))
-        self.radioButton_2.setText(_translate("SecondWindow", "Ospedale"))
-        self.radioButton_3.setText(_translate("SecondWindow", "Medico"))
         self.pushButton_5.setText(_translate("SecondWindow", "CERCA AIUTO MEDICO PIÙ VICINO"))
         self.lineEdit_2.setText(_translate("SecondWindow", "Scegli il medico oppure l\'ospedale dove vuoi andare"))
+        self.pathResult.setPlaceholderText(_translate("SecondWindow", "Il costo del percorso trovato apparirà qui, una volta trovato"))
 
     def __init__(self):
         self.positions = [] 
@@ -419,13 +418,25 @@ class Ui_SecondWindow(object):
         for position in self.positions:
             if position.getContent().getPlaceName() == self.comboBox_StartPositions_Names.currentText():
                 startPosition = position
-            if self.radioButton_2.isChecked():
-                destinationPosition = self.hospital
-            else:
-                if position.getContent().getPlaceName() == self.comboBox_GoalPositions_Names.currentText():
-                    destinationPosition = position
+            if position.getContent().getPlaceName() == self.comboBox_GoalPositions_Names.currentText():
+                destinationPosition = position
 
         pathCost = findPath(Position(startPosition.getContent().getLongitude(), startPosition.getContent().getLatitude(), startPosition.getContent().getPlaceName()), Position(destinationPosition.getContent().getLongitude(), destinationPosition.getContent().getLatitude(), destinationPosition.getContent().getPlaceName()), MAP_CSV_PATH)  
+        pathCost2 = str(pathCost)
+
+        if len(pathCost2) > 6:
+            pathCost /= 1000
+            pathCost = round(pathCost, 2)
+            pathCost = str(pathCost)
+            print(f"Il costo di questo percorso e' di: " + pathCost + " Chilometri")
+            self.pathResult.clear()
+            self.pathResult.setText(f"Il costo di questo percorso e' di: " + pathCost + " Chilometri")
+        else:
+            pathCost = round(pathCost, 2)
+            pathCost = str(pathCost)
+            print(f"Il costo di questo percorso e' di: " + pathCost + " Metri")
+            self.pathResult.clear()
+            self.pathResult.setText(f"Il costo di questo percorso e' di: " + pathCost + " Metri")
         self.viewMapPath()       
 
     def viewMap(self):
