@@ -48,7 +48,7 @@ class AStar_Frontier(object):
     def frontierLength(self):
         return len(self.frontier_Queue)
 
-    def iterator(self):
+    def __iter__(self):
         for (_, p) in self.frontier_Queue:
             yield p
 
@@ -57,24 +57,24 @@ Implementazione dell'algoritmo di ricerca A* Star
 """
 def AStar_Alghoritm(resProblem: SearchProblem, heuristic):
 
-    goalNode = resProblem.getGoal()
+    goalNode = resProblem.getGoalNode()
     startNodes = AStar_Frontier()
     for startNode in resProblem.getStartingNode():
-        startNodes.add(Graph_Support.Path(startNode), heuristic(startNode, goalNode))
+        startNodes.addPath(Graph_Support.Path(startNode), heuristic(startNode, goalNode))
 
     node_cameFrom = {}
 
     #Costo da un certo nodo iniziale fino a quello corrente
     gScore = {}
     for path in startNodes:
-        gScore[path.getLastNode()] == 0 #Setto il costo di ciascun nodo a 0
+        gScore[path.getLastNode()] = 0 #Setto il costo di ciascun nodo a 0
 
     fScore = {}
     for path in startNodes:
         node = path.getLastNode()
         fScore[node] = heuristic(node, goalNode)
 
-    while len(startNodes) != 0:
+    while startNodes.frontierLength() != 0:
 
         currentNode_Cost, currentNode_Path = startNodes.pop()
         currentNode = currentNode_Path.getLastNode()
@@ -83,7 +83,7 @@ def AStar_Alghoritm(resProblem: SearchProblem, heuristic):
             return currentNode_Path, currentNode_Cost
 
         for arc in resProblem.getArcs():
-            if (arc.hadNode(currentNode)):
+            if (arc.hasNode(currentNode)):
                 if arc.getStartNode() == currentNode:   neighbor = arc.getDestinationNode()
                 if arc.getDestinationNode() == currentNode:   neighbor = arc.getStartNode()
 
@@ -98,7 +98,7 @@ def AStar_Alghoritm(resProblem: SearchProblem, heuristic):
                     fScore[neighbor] = gScore[neighbor] + heuristic(neighbor, goalNode)
 
                     newPathToExplore = deepcopy(currentNode_Path)
-                    newPathToExplore.add(neighbor)
+                    newPathToExplore.addNode(neighbor)
 
                     if newPathToExplore not in startNodes:
                         startNodes.addPath(newPathToExplore, fScore[neighbor])

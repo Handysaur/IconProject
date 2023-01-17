@@ -17,13 +17,13 @@ class Node(object):
         if type(self) != type(__o):
             return False
 
-        return self.X < __o.getContent()
+        return self.content < __o.getContent()
 
     def __lt__(self, __o: object) -> bool:
         if type(self) != type(__o):
             return False
 
-        return self.X <= __o.getContent()      
+        return self.content <= __o.getContent()      
 
     def __hash__(self) -> int:
         return hash(str(self))

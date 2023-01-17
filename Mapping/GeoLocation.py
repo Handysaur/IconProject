@@ -48,7 +48,7 @@ Funzione che dato un file csv contenente le posizioni da caricare, crea un insie
 def loadPositions(Positions_FilePath):
     nodes = []
     arcs = []
-    csv = pd.read_csv(Positions_FilePath)
+    csv = pd.read_csv(Positions_FilePath, on_bad_lines='skip')
 
     #Itera su tutte le righe del csv.
     for a, b in csv.iterrows():

@@ -25,13 +25,14 @@ def createMap(mapPath):
         if 'Medico' in point.getContent().getPlaceName():
             folium.Marker(location = [point.getContent().getLatitude(), point.getContent().getLongitude()], tooltip = point.getContent().getPlaceName(), icon = folium.Icon(color = 'blue', icon = "fas fa-user-doctor", prefix = "fa")).add_to(map)
         if 'Ospedale' in point.getContent().getPlaceName():
-            folium.Marker(location = [point.getContent().getLatitude(), point.getContent().getLongitude()], tooltip = point.getContent().getPlaceName(), icon = folium.Icon(color = 'blue', icon = "fas fa-hospital", prefix = "fa")).add_to(map)    
-        folium.Marker(location = [point.getContent().getLatitude(), point.getContent().getLongitude()], tooltip = point.getContent().getPlaceName()).add_to(map)
+            folium.Marker(location = [point.getContent().getLatitude(), point.getContent().getLongitude()], tooltip = point.getContent().getPlaceName(), icon = folium.Icon(color = 'blue', icon = "fas fa-hospital", prefix = "fa")).add_to(map) 
+        else:       
+            folium.Marker(location = [point.getContent().getLatitude(), point.getContent().getLongitude()], tooltip = point.getContent().getPlaceName()).add_to(map)
 
     for street in streets:
         folium.PolyLine(locations = [(street.getStartNode().getContent().getLatitude(), street.getStartNode().getContent().getLongitude()), (street.getDestinationNode().getContent().getLatitude(), street.getDestinationNode().getContent().getLongitude())], color = 'orange').add_to(map)    
 
-    map.save("lastMap.html") 
+    map.save("currentMap.html") 
 
 def showMap(mapPath):
     webbrowser.open_new_tab(mapPath)
@@ -72,7 +73,7 @@ def findPath(startPosition: GeoLocation.Position, goalPosition: GeoLocation.Posi
         folium.Marker(location = [positionNodes[-1].getContent().getLatitude(), positionNodes[-1].getContent().getLongitude()], tooltip = positionNodes[-1].getContent().getPlaceName(), icon = folium.Icon(color = 'green', icon = "fas fa-hospital", prefix = "fa")).add_to(map)   
 
     #Impostazione di un marker personalizzato per la posizione di partenza
-    folium.Marker(location = [positionNodes[0].getContent().getLatitude(), positionNodes[0].getContent().getLongitude()], tooltip = positionNodes[0].getContent().getPlaceName(), icon = folium.Icon(color = 'yellow', icon = "fas fa-person-walking", prefix = "fa")).add_to(map)
+    folium.Marker(location = [positionNodes[0].getContent().getLatitude(), positionNodes[0].getContent().getLongitude()], tooltip = positionNodes[0].getContent().getPlaceName(), icon = folium.Icon(color = 'purple', icon = "fas fa-person-walking", prefix = "fa")).add_to(map)
 
     #Aggiunta dei singoli nodi nel percorso
     for node in positionNodes[1:-1]:
@@ -95,4 +96,4 @@ def eucledian_Heuristic(positionA: GeoLocation.Position, positionB: GeoLocation.
 
 createMap(MAP_PATH)
 
-showMap("lastMap.html")    
+#showMap("lastMap.html")    
