@@ -10,6 +10,9 @@ dis_desc = data_Handling.getData(1)
 dis_prec = data_Handling.getData(2)
 symp_weight = data_Handling.getData(3)
 
+dis_desc = dis_desc.to_numpy()
+dis_prec = dis_prec.to_numpy()
+
 dataset = data_Handling.flatten_words(dataset)
 dataset = data_Handling.datasetProcessing(dataset)
 
@@ -284,26 +287,30 @@ def pred_Disease(classifier, symptoms):
     disease_Precautions = []
 
     for disease in dis_desc:
-        if disease["Disease"] == prediction[0]:
-            disease_Description = disease["Description"]
+        if disease[0] == prediction[0]:
+            disease_Description = disease[1]    
 
     for disease in dis_prec:
-        if disease["Disease"] == prediction[0]:
-            disease_Precautions[0] = disease[prediction[0]]["Precaution_1"]
-            disease_Precautions[1] = disease[prediction[0]]["Precaution_2"]
-            disease_Precautions[2] = disease[prediction[0]]["Precaution_3"]
-            disease_Precautions[3] = disease[prediction[0]]["Precaution_4"]            
+        if disease[0] == prediction[0]:
+            disease_Precautions.append(str(disease[1]))
+            disease_Precautions.append(str(disease[2]))  
+            disease_Precautions.append(str(disease[3]))
+            disease_Precautions.append(str(disease[4]))          
 
-    guiPredict_Msg = "Dati i sintomi immessi, è stata predetta la seguente malattia: {prediction[0]}\n"
-    guiPredict_Msg += "Descrizione malattia:\n{disease_Description}\n"
+    guiPredict_Msg = "Dati i sintomi immessi, è stata predetta la seguente malattia: {" + prediction[0] + "}\n"
+    guiPredict_Msg += "Descrizione malattia:\n{" + disease_Description + "}\n"
     guiPredict_Msg += "-------------------------------------------------\n"
     guiPredict_Msg += "Si consiglia di adottare le seguenti precauzioni:\n"
-    guiPredict_Msg += "     - {disease_Precautions[0]}\n"
-    guiPredict_Msg += "     - {disease_Precautions[1]}\n"
-    guiPredict_Msg += "     - {disease_Precautions[2]}\n"
-    guiPredict_Msg += "     - {disease_Precautions[3]}\n"
-    guiPredict_Msg += "-------------------------------------------------\n" 
-    print("Prediction: ", prediction[0])     
+    guiPredict_Msg += "     - {" + disease_Precautions[0] + "}\n"
+    guiPredict_Msg += "     - {" + disease_Precautions[1] + "}\n"
+    guiPredict_Msg += "     - {" + disease_Precautions[2] + "}\n"
+    guiPredict_Msg += "     - {" + disease_Precautions[3] + "}\n"
+    guiPredict_Msg += "-------------------------------------------------\n"         
+    
+    #print(guiPredict_Msg)
+
+    print("Prediction: ", prediction[0])  
+       
     return guiPredict_Msg 
 
 ### Test in modalità batch del predict ###
