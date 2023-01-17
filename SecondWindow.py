@@ -17,7 +17,11 @@ import os
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath('IconProject'))))
 
 # File da cui caricare la mappa
-MAP_FILE_PATH = ROOT_DIR + "\\Documents\\IconProject\\lastMap.html"
+MAP_HTML_PATH_PATHSEARCH = ROOT_DIR + "\\Documents\\IconProject\\lastMap.html"
+MAP_HTML_PATH_NORMAL = ROOT_DIR + "\\Documents\\IconProject\\currentMap.html"
+
+# File da cui caricare la mappa
+MAP_CSV_PATH = SYSTEM_ROOTDIR + "\\Documents\\IconProject\\Mapping\\Altamura.csv"
 
 class Ui_SecondWindow(object):
     def setupUi(self, SecondWindow):
@@ -184,9 +188,10 @@ class Ui_SecondWindow(object):
 
         i = 0
         for position in self.positions:
-           self.comboBox_StartPositions_Names.addItem(position)
-           self.comboBox_StartPositions_Names.setItemText(i, position)
-           i += 1
+            if 'Ospedale' not in position.getContent().getPlaceName() and 'Medico' not in position.getContent().getPlaceName():
+                self.comboBox_StartPositions_Names.addItem("")
+                self.comboBox_StartPositions_Names.setItemText(i, position.getContent().getPlaceName())
+                i += 1
 
         self.radioButton_2 = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_2.setGeometry(QtCore.QRect(440, 320, 141, 41))
@@ -200,7 +205,7 @@ class Ui_SecondWindow(object):
         font.setPointSize(16)
         self.radioButton_3.setFont(font)
         self.radioButton_3.setObjectName("radioButton_3")
-        self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.searchPath())
         self.pushButton_5.setGeometry(QtCore.QRect(200, 390, 421, 61))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
@@ -371,8 +376,8 @@ class Ui_SecondWindow(object):
 
         for position in self.positions:
             if 'Ospedale' in position.getContent().getPlaceName() or 'Medico' in position.getContent().getPlaceName():
-                self.comboBox_GoalPositions_Names.addItem(position)
-                self.comboBox_GoalPositions_Names.setItemText(i, position)
+                self.comboBox_GoalPositions_Names.addItem("")
+                self.comboBox_GoalPositions_Names.setItemText(i, position.getContent().getPlaceName())
                 i += 1
 
         SecondWindow.setCentralWidget(self.centralwidget)
@@ -400,10 +405,10 @@ class Ui_SecondWindow(object):
         self.positions = [] 
         self.nodes = []
         self.streets = []
-        self.nodes, self.streets = loadPositions(MAP_FILE_PATH) 
+        self.nodes, self.streets = loadPositions(MAP_CSV_PATH) 
     
         for node in self.nodes:
-            self.positions.append(node.getContent().getPlaceName())
+            self.positions.append(node)
 
         self.positions.sort()
 
@@ -420,11 +425,14 @@ class Ui_SecondWindow(object):
                 if position.getContent().getPlaceName() == self.comboBox_GoalPositions_Names.currentText():
                     destinationPosition = position
 
-        pathCost = findPath(Position(startPosition.getContent().getLongitude(), startPosition.getContent().getLatitude(), startPosition.getContent().getPlaceName()), Position(destinationPosition.getContent().getLongitude(), destinationPosition.getContent().getLatitude(), destinationPosition.getContent().getPlaceName()), MAP_FILE_PATH)  
-        self.viewMap()       
+        pathCost = findPath(Position(startPosition.getContent().getLongitude(), startPosition.getContent().getLatitude(), startPosition.getContent().getPlaceName()), Position(destinationPosition.getContent().getLongitude(), destinationPosition.getContent().getLatitude(), destinationPosition.getContent().getPlaceName()), MAP_CSV_PATH)  
+        self.viewMapPath()       
 
     def viewMap(self):
-        webbrowser.open_new_tab(MAP_FILE_PATH)
+        webbrowser.open_new_tab(MAP_HTML_PATH_NORMAL)
+
+    def viewMapPath(self):
+        webbrowser.open_new_tab(MAP_HTML_PATH_PATHSEARCH)    
 
 
 if __name__ == "__main__":
