@@ -64,11 +64,13 @@ def AStar_Alghoritm(resProblem: SearchProblem, heuristic):
 
     node_cameFrom = {}
 
-    #Costo da un certo nodo iniziale fino a quello corrente
+    #gScore rappresenta, per ciascun nodo, il costo dal nodo iniziale fino a quello corrente. Settato inizialmente a 0
     gScore = {}
     for path in startNodes:
         gScore[path.getLastNode()] = 0 #Setto il costo di ciascun nodo a 0
-
+ 
+    #In fScore si va a rappresentare, per ciascun nodo, il costo effettivo del percorso che va dal nodo di partenza ad un certo nodo n al momento in fase di analisi
+    # più una stima, data dall'euristica, che sarà il costo del percorso dal nodo n fino al nodo obiettivo
     fScore = {}
     for path in startNodes:
         node = path.getLastNode()
@@ -77,7 +79,7 @@ def AStar_Alghoritm(resProblem: SearchProblem, heuristic):
     #Mentre ci sono ancora nodi nella frontiera
     while startNodes.frontierLength() != 0:
 
-        currentNode_Cost, currentNode_Path = startNodes.pop()
+        currentNode_Cost, currentNode_Path = startNodes.pop()   #Percorso dal costo minimo recuperato dalla frontiera
         currentNode = currentNode_Path.getLastNode()
 
         #Nodo obiettivo trovato, va restituito

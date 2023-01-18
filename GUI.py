@@ -2222,7 +2222,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionVisualizza_ontologia = QtWidgets.QAction(MainWindow)
         self.actionVisualizza_ontologia.setObjectName("actionVisualizza_ontologia")
-        self.actionVisualizza_ontologia.triggered.connect(self.showKBGui)
+        self.actionKB = QtWidgets.QAction(MainWindow)
+        self.actionKB.setObjectName("actionKB")
+        self.menuVisualizza_ontologia.addAction(self.actionKB)
+        self.menuVisualizza_ontologia.triggered.connect(self.showKBGui)
         self.menubar.addAction(self.menuVisualizza_ontologia.menuAction())
 
         checkboxes_List.append(self.checkBox)
@@ -2404,6 +2407,7 @@ class Ui_MainWindow(object):
         current_classifier_name = "        Classificatore correntemente in uso: " + self.comboBox.currentText()
         self.lineEdit.setText(current_classifier_name)
         self.plainTextEdit.setPlainText("Una volta effettuata una predizione, il suo risultato apparirà qui.")
+        self.actionKB.setText(_translate("MainWindow", "Ask KB"))
 
 def predict_Disease():
     

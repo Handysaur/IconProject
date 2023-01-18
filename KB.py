@@ -5,7 +5,6 @@ diseasesKB = prolog.KnowledgeBase("Diseases")
 #diseasehassymp(symptom,disease)
 #doctorstarthour(doctor,start_hour,day)
 #doctorendhour(doctor,end_hour,day)
-#doctorAvailability(doctor,hour,day)
 
 diseasesKB(["diseasehassymp(itching,fungal_infection)",
             "diseasehassymp(itching,fungal_infection)",

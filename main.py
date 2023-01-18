@@ -301,10 +301,9 @@ def pred_Disease(classifier, symptoms):
     guiPredict_Msg += "Descrizione malattia:\n{" + disease_Description + "}\n"
     guiPredict_Msg += "-------------------------------------------------\n"
     guiPredict_Msg += "Si consiglia di adottare le seguenti precauzioni:\n"
-    guiPredict_Msg += "     - {" + disease_Precautions[0] + "}\n"
-    guiPredict_Msg += "     - {" + disease_Precautions[1] + "}\n"
-    guiPredict_Msg += "     - {" + disease_Precautions[2] + "}\n"
-    guiPredict_Msg += "     - {" + disease_Precautions[3] + "}\n"
+    for prec in disease_Precautions:
+        guiPredict_Msg += "     - {" + prec + "}\n"
+    
     guiPredict_Msg += "-------------------------------------------------\n"         
     
     #print(guiPredict_Msg)
