@@ -74,21 +74,23 @@ def AStar_Alghoritm(resProblem: SearchProblem, heuristic):
         node = path.getLastNode()
         fScore[node] = heuristic(node, goalNode)
 
+    #Mentre ci sono ancora nodi nella frontiera
     while startNodes.frontierLength() != 0:
 
         currentNode_Cost, currentNode_Path = startNodes.pop()
         currentNode = currentNode_Path.getLastNode()
 
+        #Nodo obiettivo trovato, va restituito
         if resProblem.isGoalNode(currentNode):
             return currentNode_Path, currentNode_Cost
-
+        
         for arc in resProblem.getArcs():
             if (arc.hasNode(currentNode)):
                 if arc.getStartNode() == currentNode:   neighbor = arc.getDestinationNode()
                 if arc.getDestinationNode() == currentNode:   neighbor = arc.getStartNode()
 
                 currentExploration_gScore = gScore[currentNode] + arc.getCost()
-                neighbor_gScore = gScore[neighbor] if (neighbor in gScore) else MAX_PATH_COST    
+                neighbor_gScore = gScore[neighbor] if (neighbor in gScore) else MAX_PATH_COST      #Costo del vicino se non è stato già esplorato
 
                 #Costo del nodo vicino al nodo corrente è migliore dunque conviene esplorare questo percorso
                 if currentExploration_gScore < neighbor_gScore:

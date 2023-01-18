@@ -1,5 +1,4 @@
 from Dataset import data_Handling
-import metrics
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.utils._testing import ignore_warnings
@@ -140,13 +139,6 @@ For the examined diseases dataset with KNeighborsClassifier:
 The output of the hyP_KNN function is {'leaf_size': 1, 'metric': 'minkowski', 'n_neighbors': 5, 'weights': 'distance'}
 The classification report is
                                          precision    recall  f1-score   support
-                               accuracy                           0.99      1722
-                              macro avg       0.99      0.99      0.99      1722
-                           weighted avg       0.99      0.99      0.99      1722
-
-Accuracy: 0.9936120789779327
-Best score: 0.9953115203761754
-
                                accuracy                           0.99      1722
                               macro avg       0.99      0.99      0.99      1722
                            weighted avg       0.99      0.99      0.99      1722
