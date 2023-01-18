@@ -33,7 +33,7 @@ def model_completeEvaluation(classifier, X_train, X_test, Y_train, Y_test, train
 """
 Metodo per confrontare i diversi classificatori tra training set e test set, andando a stampare con un grafico i vari dati di accuratezza
 """
-def classifiersComparison(train_Accuracy, test_Accuracy, StdDeviation, title):
+def classifiersComparison(train_Accuracy, test_Accuracy, title):
     algorithms = ('K-Nearest Neighbors', 'Naive Bayes', 'Random Forest', 'Decision Tree', 'SVC', 'Logistic Regression') 
     n_ = len(algorithms)
 
@@ -43,7 +43,6 @@ def classifiersComparison(train_Accuracy, test_Accuracy, StdDeviation, title):
     opacity = 1
     rects1 = plt.bar(index, train_Accuracy, bar_width, alpha = opacity, color='darkslategrey', label='Train')
     rects2 = plt.bar(index + bar_width, test_Accuracy, bar_width, alpha = opacity, color='mediumturquoise', label='Test')
-    rects3 = plt.bar(index + bar_width, StdDeviation, bar_width, alpha = opacity, color='salmon', label='Standard Deviation')
     plt.xlabel('Algorithm') # x axis label
     plt.ylabel('Accuracy (%)') # y axis label
     plt.ylim(0, 115)
@@ -54,8 +53,6 @@ def classifiersComparison(train_Accuracy, test_Accuracy, StdDeviation, title):
         plt.text(x = index - 0.035, y = data + 1, s = round(data, 2), fontdict = dict(fontsize = 8))
     for index, data in enumerate(test_Accuracy):
         plt.text(x = index + 0.25, y = data + 1, s = round(data, 2), fontdict = dict(fontsize = 8))
-    for index, data in enumerate(StdDeviation):
-        plt.text(x = index + 0.25, y = data + 1, s = round(data, 2), fontdict = dict(fontsize = 8)) 
 
     plt.show()    
 
